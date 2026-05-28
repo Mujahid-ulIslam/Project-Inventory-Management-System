@@ -62,7 +62,7 @@ namespace Project_Inventory_Management_System
         public bool UpdateProducts()
         {
 
-            string searchId = InputHelper.GetValidInput("Enter the Product ID of the product to be updated:");
+            string searchId = InputHelper.GetValidInput("Enter Product ID: ");
             
             if (searchId == null) return false;
 
@@ -73,18 +73,83 @@ namespace Project_Inventory_Management_System
                 return false;
             }
 
-            string newName = InputHelper.GetValidInput("Enter new name: ");
-            if (newName == null) return false;
+            Console.WriteLine();
+            Console.WriteLine("[1] Update Name");
+            Console.WriteLine("[2] Update Quantity");
+            Console.WriteLine("[3] Update Price");
+            Console.WriteLine("[4] Update All");
 
-            int? newQuantity = InputHelper.GetValidQuantity();
-            if (newQuantity == null) return false;
+            Console.WriteLine();
 
-            decimal? newPrice = InputHelper.GetValidPrice();
-            if (newPrice == null) return false;
+            Console.Write("Choose what to update: ");
 
-            product.Name = newName;
-            product.Quantity = newQuantity;
-            product.Price = newPrice;
+            string choice = Console.ReadLine();
+
+
+
+            switch (choice)
+            {
+                case "1":
+
+                    string newName =
+                        InputHelper.GetValidInput("Enter new name: ");
+
+                    if (newName == null) return false;
+
+                    product.Name = newName;
+
+                    break;
+
+                case "2":
+
+                    int? newQuantity =
+                        InputHelper.GetValidQuantity();
+
+                    if (newQuantity == null) return false;
+
+                    product.Quantity = newQuantity;
+
+                    break;
+
+                case "3":
+
+                    decimal? newPrice =
+                        InputHelper.GetValidPrice();
+
+                    if (newPrice == null) return false;
+
+                    product.Price = newPrice;
+
+                    break;
+
+                case "4":
+
+                    string updatedName =
+                        InputHelper.GetValidInput("Enter new name: ");
+
+                    if (updatedName == null) return false;
+
+                    int? updatedQuantity =
+                        InputHelper.GetValidQuantity();
+
+                    if (updatedQuantity == null) return false;
+
+                    decimal? updatedPrice =
+                        InputHelper.GetValidPrice();
+
+                    if (updatedPrice == null) return false;
+
+                    product.Name = updatedName;
+                    product.Quantity = updatedQuantity;
+                    product.Price = updatedPrice;
+
+                    break;
+
+                default:
+
+                    ConsoleHelper.ShowError("Invalid option.");
+                    return false;
+            }
 
             ConsoleHelper.ShowSuccess("Product updated successfully!");
 
