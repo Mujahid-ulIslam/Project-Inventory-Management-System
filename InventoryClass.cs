@@ -67,17 +67,47 @@ namespace Project_Inventory_Management_System
             if (searchId == null) return false;
 
             ProductClass product = Products.FirstOrDefault(p => p.Id == searchId);
+
             if (product == null)
             {
                 ConsoleHelper.ShowError("Product not found.");
                 return false;
             }
 
+            // Let's user see the current product information before changing
+
             Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.WriteLine("Current Product Information:");
+
+            Console.ResetColor();
+
+            Console.WriteLine(product);
+
+            Console.WriteLine();
+
+
+            // Gives user a choice of which fields to change
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            Console.WriteLine("================================================");
+            Console.WriteLine("                 UPDATE OPTIONS                 ");
+            Console.WriteLine("================================================");
+
+            Console.ResetColor();
+
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
             Console.WriteLine("[1] Update Name");
             Console.WriteLine("[2] Update Quantity");
             Console.WriteLine("[3] Update Price");
             Console.WriteLine("[4] Update All");
+
+            Console.ResetColor();
 
             Console.WriteLine();
 
@@ -204,7 +234,8 @@ namespace Project_Inventory_Management_System
 
         public bool DeleteProducts()
         {
-            string searchId = InputHelper.GetValidInput("Enter the Product ID of the product to be deleted:");
+            string searchId = InputHelper.GetValidInput("Enter Product ID: ");
+            Console.WriteLine();
 
             if (searchId == null) return false;
 
@@ -212,6 +243,47 @@ namespace Project_Inventory_Management_System
             if (product == null)
             {
                 ConsoleHelper.ShowError("Product not found.");
+                return false;
+            }
+
+            // Check with user if they really want to delete the product
+
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.WriteLine("========================================================================================");
+            Console.WriteLine("                                 PRODUCT TO DELETE                 ");
+            Console.WriteLine("========================================================================================");
+
+            Console.ResetColor();
+
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.WriteLine(
+                "Name".PadRight(40) +
+                "ID".PadRight(20) +
+                "Quantity".PadRight(20) +
+                "Price".PadRight(20)
+            );
+
+            Console.ResetColor();
+
+            Console.WriteLine("----------------------------------------------------------------------------------------");
+
+            Console.WriteLine(product);
+
+            Console.WriteLine();
+
+            Console.Write("Are you sure you want to delete this product? (y/n): ");
+
+            string confirmation = Console.ReadLine();
+
+            if (confirmation.ToLower() != "y")
+            {
+                ConsoleHelper.ShowError("Delete operation cancelled.");
                 return false;
             }
 
