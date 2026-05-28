@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.IO;   //Used for reading and writing files
+using System.Text.Json;   // Used for converting objects to JSON and vice versa
 
 namespace Project_Inventory_Management_System
 {
@@ -25,11 +28,19 @@ namespace Project_Inventory_Management_System
 
             if (productName == null) return false;  //  If InputHelper.GetValidInput method returns null the method is exited
             
+            
 
             string productId = InputHelper.GetValidInput("Enter Product ID: ");
 
             if (productId == null) return false;
-            
+            bool exists = Products.Any(p => p.Id == productId);      //  Checks if for any product p in the Products list if the product (p's) Id is same as the one given by user
+            if (exists)
+            {
+                ConsoleHelper.ShowError("ID already exists.");
+                return false;
+            }
+
+
 
             int? quantity = InputHelper.GetValidQuantity();
             if (quantity == null) return false;
@@ -38,7 +49,7 @@ namespace Project_Inventory_Management_System
             if (price == null) return false;
          
 
-            ProductClass product = new ProductClass( productName, productId, quantity, price);
+            ProductClass product = new ProductClass( productId, productName, quantity, price);
 
             Products.Add(product);
 
@@ -48,10 +59,38 @@ namespace Project_Inventory_Management_System
         }
 
 
-        public void UpdateProducts()
+        public bool UpdateProducts()
         {
-            Console.WriteLine("Enter the Product ID of the product to be updated: ");
-            string updateInput = Console.ReadLine();
+
+            string searchId = InputHelper.GetValidInput("Enter the Product ID of the product to be updated:");
+            
+            if (searchId == null) return false;
+
+            ProductClass product = Products.FirstOrDefault(p => p.Id == searchId);
+            if (product == null)
+            {
+                ConsoleHelper.ShowError("Product not found.");
+                return false;
+            }
+
+            string newName = InputHelper.GetValidInput("Enter new name: ");
+            if (newName == null) return false;
+
+            int? newQuantity = InputHelper.GetValidQuantity();
+            if (newQuantity == null) return false;
+
+            decimal? newPrice = InputHelper.GetValidPrice();
+            if (newPrice == null) return false;
+
+            product.Name = newName;
+            product.Quantity = newQuantity;
+            product.Price = newPrice;
+
+            ConsoleHelper.ShowSuccess("Product updated successfully!");
+
+            return true;
+
+            
 
         }
 
@@ -63,21 +102,151 @@ namespace Project_Inventory_Management_System
 
             if (Products.Count == 0)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("There are no products to display.");
-                Console.ResetColor();
-
+                ConsoleHelper.ShowError("There are no products to display.");
                 return;
             }
 
-            foreach (ProductClass product in Products.OrderBy(p => p.Price))
+            
+
+            foreach (ProductClass product in Products)
             {
+               
                 Console.WriteLine(product);
             }
         }
 
 
+        public bool DeleteProducts()
+        {
+            string searchId = InputHelper.GetValidInput("Enter the Product ID of the product to be deleted:");
 
+            if (searchId == null) return false;
+
+            ProductClass product = Products.FirstOrDefault(p => p.Id == searchId);
+            if (product == null)
+            {
+                ConsoleHelper.ShowError("Product not found.");
+                return false;
+            }
+
+            Products.Remove(product);
+            ConsoleHelper.ShowSuccess("Product deleted successfully!");
+            return true;
+        }
+
+
+        public void GenerateReport()
+        {
+            if (Products.Count == 0)
+            {
+                ConsoleHelper.ShowError("No products available.");
+                return;
+            }
+
+            Console.WriteLine("====================================================================================================");
+            Console.WriteLine("                                     Inventory Report                                                 ");
+            Console.WriteLine("====================================================================================================");
+            Console.WriteLine("Name".PadRight(40) + "ID".PadRight(20) + "Quantity".PadRight(20) + "Price".PadRight(20));
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            
+
+            foreach (ProductClass product in Products)
+            {
+                Console.WriteLine(product);
+            }
+
+            decimal total = 0;
+            foreach (ProductClass product in Products)
+            {
+                total += product.Price.Value * product.Quantity.Value;
+            }
+
+            Console.WriteLine();
+          
+            Console.Write("Total inventory value is: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"{ total} kr");
+            Console.ResetColor();
+
+            // Code for checking the most expensive and cheapest product
+
+            ProductClass expensiveProduct = Products.OrderByDescending(p => p.Price).FirstOrDefault();
+            ProductClass cheapestProduct = Products.OrderBy(p => p.Price).FirstOrDefault();
+
+            //Console.WriteLine($"Most expensive product: {expensiveProduct.Name} - {expensiveProduct.Price} kr");
+            //Console.WriteLine($"Cheapest product: {cheapestProduct.Name} - {cheapestProduct.Price} kr");
+
+            Console.Write("Most expensive product: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"{expensiveProduct.Name} - ");
+            Console.WriteLine($"{expensiveProduct.Price} kr");
+            Console.ResetColor();
+
+            Console.Write("Cheapest product: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"{cheapestProduct.Name} - ");
+            Console.WriteLine($"{cheapestProduct.Price} kr");
+            Console.ResetColor();
+
+            var lowOnStock = Products.Where(p => p.Quantity <= 5);
+            Console.WriteLine();
+            Console.WriteLine("Product Name".PadRight(40) + "Quantity in stock".PadLeft(10));
+            Console.WriteLine("-------------------------------------------------------------");
+            
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            foreach (ProductClass product in lowOnStock)
+            {
+                
+                Console.Write($"{product.Name.PadRight(40)}");
+                
+                
+                
+                Console.WriteLine($"{product.Quantity.ToString().PadLeft(10)}");
+               
+
+            }
+
+            Console.ResetColor();
+
+
+
+
+
+
+
+        }
+
+        public void SaveToFile()
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+
+            string json = 
+                JsonSerializer.Serialize( Products, options );
+
+            File.WriteAllText("products.json", json);
+            Console.WriteLine("Product saved!");
+            Console.WriteLine(Directory.GetCurrentDirectory());
+        }
+
+        public void LoadFromFile()
+        {
+            if (!File.Exists("products.json"))
+            {
+                return;
+            }
+
+            string json =
+                File.ReadAllText("products.json");
+
+            Products =
+                JsonSerializer.Deserialize<List<ProductClass>>(json) 
+                ?? new List<ProductClass>();
+
+        }
 
 
 

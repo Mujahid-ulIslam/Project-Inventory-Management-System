@@ -6,6 +6,10 @@ namespace Project_Inventory_Management_System
 {
     internal class ProductClass
     {
+        public ProductClass()
+        {
+
+        }
         public ProductClass(string id)
         {
             Id = id;
@@ -23,12 +27,21 @@ namespace Project_Inventory_Management_System
         public int? Quantity { get; set; }
         public decimal? Price { get; set; }
 
-        public void DisplayProductInfo()
+        public override string ToString()
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Product Name: {Name}, ID: {Id}, Quantity: {Quantity}, Price: {Price}");
-            Console.ResetColor();
+            return Name.PadRight(40) + Id.PadRight(20) + Quantity.ToString().PadRight(20) + Price.ToString().PadRight(20);
+
+            //return "Name".PadRight(20) + "ID".PadRight(15) + "Quantity".PadRight(15) + "Price".PadRight(15);
+
+
         }
+
+        //public void DisplayProductInfo()
+        //{
+        //    Console.ForegroundColor = ConsoleColor.Green;
+        //    Console.WriteLine($"Product Name: {Name}, ID: {Id}, Quantity: {Quantity}, Price: {Price}");
+        //    Console.ResetColor();
+        //}
 
 
     }
