@@ -24,38 +24,73 @@ inventory.LoadFromFile();
 
 
 while (true) 
-{ 
+{
+    
+    Console.Clear();
+
+    Console.ForegroundColor = ConsoleColor.Cyan;
+
+    Console.WriteLine("======================================================");
+    Console.WriteLine("              INVENTORY MANAGEMENT SYSTEM             ");
+    Console.WriteLine("======================================================");
+
+    Console.ResetColor();
 
     Console.WriteLine();
+
+    Console.ForegroundColor = ConsoleColor.Yellow;
+
+    Console.WriteLine("[1] Add Product");
+    Console.WriteLine("[2] Update Product");
+    Console.WriteLine("[3] Delete Product");
+    Console.WriteLine("[4] View Products");
+    Console.WriteLine("[5] Generate Report");
+    Console.WriteLine("[6] Exit");
+
+    Console.ResetColor();
+
     Console.WriteLine();
-    Console.WriteLine("1. Add a product");
-    Console.WriteLine("2. Update a product");
-    Console.WriteLine("3. Delete a product");
-    Console.WriteLine("4. View all product");
-    Console.WriteLine("5. Generate a report");
-    Console.WriteLine("6. Exit the application");
-    Console.WriteLine("Enter 'q' to go back to the main menu.");
+
+    Console.WriteLine("---------------------------------------------");
+    Console.WriteLine("Type 'q' at any input to cancel the operation.");
+    Console.WriteLine("---------------------------------------------");
+
     Console.WriteLine();
-    Console.Write("Choose option: ");
+
+    Console.ForegroundColor = ConsoleColor.Cyan;
+
+    Console.Write("Select an option: ");
+
+    Console.ResetColor();
+
     string userInput = Console.ReadLine();
 
     switch (userInput)
     {
         case "1":
-            Console.Clear();
+            Console.Clear();            
             if (inventory.AddProducts())
             {
                 inventory.SaveToFile();
-            }        
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+
             break;
 
         case "2":
-
             Console.Clear();
             if (inventory.UpdateProducts())
             {
                 inventory.SaveToFile();
             }
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+
             break;
 
         case "3":
@@ -64,20 +99,46 @@ while (true)
             {
                 inventory.SaveToFile();
             }
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+
             break;
 
         case "4":
             Console.Clear();
             inventory.ShowProducts();
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+
             break;
 
         case "5":
             Console.Clear();
             inventory.GenerateReport();
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+
             break;
 
 
         case "6":
+
+            Console.Clear();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            Console.WriteLine("======================================================");
+            Console.WriteLine("     Thank you for using Inventory Management System! ");
+            Console.WriteLine("======================================================");
+
+            Console.ResetColor();
+
             return;
 
         default:

@@ -97,8 +97,29 @@ namespace Project_Inventory_Management_System
 
         public void ShowProducts()
         {
-            Console.WriteLine("=====PRODUCTS LIST=====");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            Console.WriteLine("=======================================================================================");
+            Console.WriteLine("                                     PRODUCTS LIST                         ");
+            Console.WriteLine("=======================================================================================");
+
+            Console.ResetColor();
+
             Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.WriteLine(
+                "Name".PadRight(40) +
+                "ID".PadRight(20) +
+                "Quantity".PadRight(20) +
+                "Price".PadRight(20)
+            );
+
+            Console.ResetColor();
+
+            Console.WriteLine(
+                "--------------------------------------------------------------------------------------");
 
             if (Products.Count == 0)
             {
@@ -143,12 +164,27 @@ namespace Project_Inventory_Management_System
                 return;
             }
 
-            Console.WriteLine("====================================================================================================");
-            Console.WriteLine("                                     Inventory Report                                                 ");
-            Console.WriteLine("====================================================================================================");
-            Console.WriteLine("Name".PadRight(40) + "ID".PadRight(20) + "Quantity".PadRight(20) + "Price".PadRight(20));
-            Console.WriteLine("----------------------------------------------------------------------------------------------------");
-            
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            Console.WriteLine("================================================================================");
+            Console.WriteLine("                              INVENTORY REPORT                                  ");
+            Console.WriteLine("================================================================================");
+
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.WriteLine(
+                "Name".PadRight(40) +
+                "ID".PadRight(20) +
+                "Quantity".PadRight(15) +
+                "Price".PadRight(15)
+            );
+
+            Console.ResetColor();
+
+            Console.WriteLine("--------------------------------------------------------------------------------");
+
 
             foreach (ProductClass product in Products)
             {
@@ -163,10 +199,10 @@ namespace Project_Inventory_Management_System
 
             Console.WriteLine();
           
-            Console.Write("Total inventory value is: ");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"{ total} kr");
-            Console.ResetColor();
+            //Console.Write("Total inventory value is: ");
+            //Console.ForegroundColor = ConsoleColor.Green;
+            //Console.WriteLine($"{ total} kr");
+            //Console.ResetColor();
 
             // Code for checking the most expensive and cheapest product
 
@@ -176,23 +212,70 @@ namespace Project_Inventory_Management_System
             //Console.WriteLine($"Most expensive product: {expensiveProduct.Name} - {expensiveProduct.Price} kr");
             //Console.WriteLine($"Cheapest product: {cheapestProduct.Name} - {cheapestProduct.Price} kr");
 
-            Console.Write("Most expensive product: ");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write($"{expensiveProduct.Name} - ");
-            Console.WriteLine($"{expensiveProduct.Price} kr");
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            Console.WriteLine("================================================================================");
+            Console.WriteLine("                              INVENTORY STATISTICS                              ");
+            Console.WriteLine("================================================================================");
+
             Console.ResetColor();
 
-            Console.Write("Cheapest product: ");
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.Write("Total Inventory Value: ".PadRight(35));
+
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write($"{cheapestProduct.Name} - ");
-            Console.WriteLine($"{cheapestProduct.Price} kr");
+
+            Console.WriteLine($"{total:N0} kr");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.Write("Most Expensive Product: ".PadRight(35));
+
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            Console.WriteLine($"{expensiveProduct.Name} ({expensiveProduct.Price} kr)");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.Write("Cheapest Product: ".PadRight(35));
+
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            Console.WriteLine($"{cheapestProduct.Name} ({cheapestProduct.Price} kr)");
+
             Console.ResetColor();
+
+            // Low Stock Products
 
             var lowOnStock = Products.Where(p => p.Quantity <= 5);
             Console.WriteLine();
-            Console.WriteLine("Product Name".PadRight(40) + "Quantity in stock".PadLeft(10));
-            Console.WriteLine("-------------------------------------------------------------");
-            
+
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.WriteLine("================================================================================");
+            Console.WriteLine("                               LOW STOCK PRODUCTS                               ");
+            Console.WriteLine("================================================================================");
+
+            Console.ResetColor();
+
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.WriteLine(
+                "Product Name".PadRight(40) +
+                "Quantity In Stock".PadLeft(20)
+            );
+
+            Console.ResetColor();
+
+            Console.WriteLine("--------------------------------------------------------------------------------");
+
             Console.ForegroundColor = ConsoleColor.Red;
 
             foreach (ProductClass product in lowOnStock)
@@ -209,12 +292,6 @@ namespace Project_Inventory_Management_System
 
             Console.ResetColor();
 
-
-
-
-
-
-
         }
 
         public void SaveToFile()
@@ -228,8 +305,7 @@ namespace Project_Inventory_Management_System
                 JsonSerializer.Serialize( Products, options );
 
             File.WriteAllText("products.json", json);
-            Console.WriteLine("Product saved!");
-            Console.WriteLine(Directory.GetCurrentDirectory());
+            
         }
 
         public void LoadFromFile()
