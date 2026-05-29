@@ -3,19 +3,19 @@
 
 using Project_Inventory_Management_System;
 
-List<ProductClass> products = new List<ProductClass>()
-{
-    new ProductClass("P101", "Dell XPS 15", 5, 1800),
-    new ProductClass("P102", "MacBook Air M3", 3, 1500),
-    new ProductClass("P103", "Logitech Mouse", 15, 40),
-    new ProductClass("P104", "Mechanical Keyboard", 8, 120),
-    new ProductClass("P105", "Samsung Monitor 27\"", 6, 300),
-    new ProductClass("P106", "PlayStation 5", 4, 600),
-    new ProductClass("P107", "Xbox Series X", 2, 550),
-    new ProductClass("P108", "iPhone 15 Pro", 7, 1300),
-    new ProductClass("P109", "USB-C Charger", 20, 25),
-    new ProductClass("P110", "Noise Cancelling Headphones", 5, 250)
-};
+List<ProductClass> products = new List<ProductClass>();
+//{
+//    new ProductClass("P101", "Dell XPS 15", 5, 1800),
+//    new ProductClass("P102", "MacBook Air M3", 3, 1500),
+//    new ProductClass("P103", "Logitech Mouse", 15, 40),
+//    new ProductClass("P104", "Mechanical Keyboard", 8, 120),
+//    new ProductClass("P105", "Samsung Monitor 27\"", 6, 300),
+//    new ProductClass("P106", "PlayStation 5", 4, 600),
+//    new ProductClass("P107", "Xbox Series X", 2, 550),
+//    new ProductClass("P108", "iPhone 15 Pro", 7, 1300),
+//    new ProductClass("P109", "USB-C Charger", 20, 25),
+//    new ProductClass("P110", "Noise Cancelling Headphones", 5, 250)
+//};
 
 
 InventoryClass inventory = new InventoryClass(products);

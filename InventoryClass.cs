@@ -61,6 +61,13 @@ namespace Project_Inventory_Management_System
 
         public bool UpdateProducts()
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("AVAILABLE PRODUCTS");
+            Console.ResetColor();
+
+            Console.WriteLine();
+
+            ShowProductsTable();
 
             string searchId = InputHelper.GetValidInput("Enter Product ID: ");
             
@@ -248,6 +255,14 @@ namespace Project_Inventory_Management_System
 
         public bool DeleteProducts()
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("AVAILABLE PRODUCTS");
+            Console.ResetColor();
+
+            Console.WriteLine();
+
+            ShowProductsTable();
+
             string searchId = InputHelper.GetValidInput("Enter Product ID: ");
             Console.WriteLine();
 
@@ -474,6 +489,32 @@ namespace Project_Inventory_Management_System
                 ?? new List<ProductClass>();
 
         }
+
+        private void ShowProductsTable()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.WriteLine(
+                "Name".PadRight(40) +
+                "ID".PadRight(20) +
+                "Quantity".PadRight(20) +
+                "Price".PadRight(20)
+            );
+
+            Console.ResetColor();
+
+            Console.WriteLine("--------------------------------------------------------------------------------------");
+
+            foreach (ProductClass product in Products)
+            {
+                Console.WriteLine(product);
+            }
+
+            Console.WriteLine();
+        }
+
+
+
 
 
 
