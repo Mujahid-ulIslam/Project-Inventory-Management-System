@@ -66,7 +66,7 @@ namespace Project_Inventory_Management_System
             
             if (searchId == null) return false;
 
-            ProductClass product = Products.FirstOrDefault(p => p.Id == searchId);
+            ProductClass product = Products.FirstOrDefault(p => p.Id.ToLower() == searchId.ToLower());
 
             if (product == null)
             {
@@ -83,6 +83,20 @@ namespace Project_Inventory_Management_System
             Console.WriteLine("Current Product Information:");
 
             Console.ResetColor();
+
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.WriteLine(
+                "Name".PadRight(40) +
+                "ID".PadRight(20) +
+                "Quantity".PadRight(20) +
+                "Price".PadRight(20)
+            );
+
+            Console.ResetColor();
+            Console.WriteLine();
 
             Console.WriteLine(product);
 
@@ -239,7 +253,7 @@ namespace Project_Inventory_Management_System
 
             if (searchId == null) return false;
 
-            ProductClass product = Products.FirstOrDefault(p => p.Id == searchId);
+            ProductClass product = Products.FirstOrDefault(p => p.Id.ToLower() == searchId.ToLower());
             if (product == null)
             {
                 ConsoleHelper.ShowError("Product not found.");
